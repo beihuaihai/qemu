@@ -1,0 +1,25 @@
+From 202cf1fb867930250a9cf27663ce7408445b566d Mon Sep 17 00:00:00 2001
+From: Yaowei Bai <baiyaowei@cmss.chinamobile.com>
+Date: Mon, 29 Aug 2016 23:50:23 -0400
+Subject: [PATCH] hw: ivshmem: disable one code line for TREND
+
+Signed-off-by: Yaowei Bai <baiyaowei@cmss.chinamobile.com>
+---
+ hw/misc/ivshmem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/hw/misc/ivshmem.c b/hw/misc/ivshmem.c
+index 5d272c8..e274619 100644
+--- a/hw/misc/ivshmem.c
++++ b/hw/misc/ivshmem.c
+@@ -303,7 +303,7 @@ static CharDriverState* create_eventfd_chr_device(void * opaque, EventNotifier *
+         error_report("creating eventfd for eventfd %d failed", eventfd);
+         exit(1);
+     }
+-    qemu_chr_fe_claim_no_fail(chr);
++    // qemu_chr_fe_claim_no_fail(chr);
+ 
+     /* if MSI is supported we need multiple interrupts */
+     if (ivshmem_has_feature(s, IVSHMEM_MSI)) {
+-- 
+1.8.3.1

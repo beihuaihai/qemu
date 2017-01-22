@@ -1,0 +1,37 @@
+From 24fd3177474ebe54b6587815ede8d763f34497f2 Mon Sep 17 00:00:00 2001
+From: wdongxu <wdongxu@outlook.com>
+Date: Tue, 23 Aug 2016 10:10:30 +0800
+Subject: [PATCH 3/3] sheepdog: support external IO NIC function
+
+Signed-off-by: wangzhengyong <wangzhengyong@cmss.chinamobile.com>
+---
+ block/sheepdog.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/block/sheepdog.c b/block/sheepdog.c
+index b956ecc..0a470b2 100644
+--- a/block/sheepdog.c
++++ b/block/sheepdog.c
+@@ -128,6 +128,8 @@ struct node_id {
+     uint16_t port;
+     uint8_t io_addr[16];
+     uint16_t io_port;
++    uint8_t ext_io_addr[16];
++    uint16_t ext_io_port;
+     uint8_t pad[4];
+ };
+ 
+@@ -1572,8 +1574,8 @@ static int sd_get_nodes(BDRVSheepdogState *s, Error **errp)
+         for (i = 0; i < nr_nodes; i++) {
+             struct sheep_host *p = s->hosts + i;
+             p->port = nodes[i].nid.port;
+-            if (!inet_ntop(AF_INET, nodes[i].nid.addr + 12,
+-                p->addr, INET_ADDRSTRLEN)) {
++            if (!inet_ntop(AF_INET, nodes[i].nid.ext_io_port? nodes[i].nid.ext_io_addr + 12
++					:nodes[i].nid.addr + 12, p->addr, INET_ADDRSTRLEN)) {
+                 g_free(s->hosts);
+                 ret = SD_RES_SYSTEM_ERROR;
+                 goto out;
+-- 
+1.8.3.1
+
